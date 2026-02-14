@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  /* ====== Icon Base ====== */
+  .ico {
+    @apply inline-block relative align-middle;
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ====== Road Maintenance (logo) ====== */
+  .ico-road {
+    @apply rounded-md;
+    background: linear-gradient(135deg, rgba(79,70,229,.25), rgba(79,70,229,.10));
+    border: 1px solid rgba(79,70,229,.25);
+  }
+  .ico-road::before {
+    content:"";
+    position:absolute;
+    inset:3px 6px;
+    border-radius:999px;
+    background: rgba(79,70,229,.55);
+    transform: rotate(18deg);
+  }
+  .ico-road::after {
+    content:"";
+    position:absolute;
+    left:7px; top:3px;
+    width:2px; height:10px;
+    border-radius:999px;
+    background: rgba(79,70,229,.35);
+  }
+
+  /* ====== Nav Icons ====== */
+  .ico-home::before {
+    content:"";
+    position:absolute;
+    left:2px; top:6px;
+    width:12px; height:8px;
+    border-radius:3px;
+    border:2px solid currentColor;
+    border-top:0;
+  }
+  .ico-home::after {
+    content:"";
+    position:absolute;
+    left:3px; top:2px;
+    width:10px; height:8px;
+    transform: rotate(45deg);
+    border-left:2px solid currentColor;
+    border-top:2px solid currentColor;
+  }
+
+  .ico-folder::before {
+    content:"";
+    position:absolute;
+    left:2px; top:5px;
+    width:12px; height:9px;
+    border-radius:3px;
+    border:2px solid currentColor;
+  }
+  .ico-folder::after {
+    content:"";
+    position:absolute;
+    left:2px; top:3px;
+    width:7px; height:4px;
+    border-radius:3px 3px 0 0;
+    border:2px solid currentColor;
+    border-bottom:0;
+    background: transparent;
+  }
+
+  .ico-info::before {
+    content:"";
+    position:absolute;
+    left:7px; top:7px;
+    width:2px; height:6px;
+    border-radius:999px;
+    background: currentColor;
+  }
+  .ico-info::after {
+    content:"";
+    position:absolute;
+    left:7px; top:3px;
+    width:2px; height:2px;
+    border-radius:999px;
+    background: currentColor;
+  }
+
+  .ico-mail::before {
+    content:"";
+    position:absolute;
+    inset:2px;
+    border-radius:3px;
+    border:2px solid currentColor;
+  }
+  .ico-mail::after {
+    content:"";
+    position:absolute;
+    left:3px; top:5px;
+    width:10px; height:6px;
+    border-left:2px solid currentColor;
+    border-bottom:2px solid currentColor;
+    transform: rotate(-35deg);
+    transform-origin: left bottom;
+    opacity:.9;
+  }
+
+  /* ====== Quick Analysis (play in circle) ====== */
+  .ico-play {
+    border-radius:999px;
+    border:2px solid currentColor;
+  }
+  .ico-play::after {
+    content:"";
+    position:absolute;
+    left:6px; top:4px;
+    width:0; height:0;
+    border-left:6px solid currentColor;
+    border-top:4px solid transparent;
+    border-bottom:4px solid transparent;
+  }
+
+  /* ====== Theme (sun/moon) ====== */
+  .ico-sun {
+    border-radius:999px;
+    background: currentColor;
+    box-shadow:
+      0 -8px 0 -6px currentColor,
+      0  8px 0 -6px currentColor,
+      8px 0 0 -6px currentColor,
+      -8px 0 0 -6px currentColor;
+    opacity:.9;
+  }
+  .ico-moon::before {
+    content:"";
+    position:absolute;
+    inset:2px;
+    border-radius:999px;
+    background: currentColor;
+  }
+  .ico-moon::after {
+    content:"";
+    position:absolute;
+    left:6px; top:2px;
+    width:10px; height:12px;
+    border-radius:999px;
+    background: var(--moon-cut, white);
+    opacity:1;
+  }
+
+  /* ====== Language (globe-ish) ====== */
+  .ico-lang {
+    border-radius:999px;
+    border:2px solid currentColor;
+  }
+  .ico-lang::before {
+    content:"";
+    position:absolute;
+    left:7px; top:2px;
+    width:2px; height:12px;
+    border-radius:999px;
+    background: currentColor;
+    opacity:.75;
+  }
+  .ico-lang::after {
+    content:"";
+    position:absolute;
+    left:3px; top:7px;
+    width:10px; height:2px;
+    border-radius:999px;
+    background: currentColor;
+    opacity:.75;
+  }
+}
+html.dark { --moon-cut: #030712; } /* خلفية دارك */
+html:not(.dark) { --moon-cut: #ffffff; } /* خلفية لايت */
