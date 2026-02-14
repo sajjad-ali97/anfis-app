@@ -175,6 +175,120 @@
     background: currentColor;
     opacity:.75;
   }
+  [x-cloak] { display: none !important; }
+/* ===== UI System Tokens (AI/Dashboard) ===== */
+:root{
+  --ui-card: 255 255 255;
+  --ui-surface: 248 250 252;
+  --ui-text: 15 23 42;
+  --ui-muted: 100 116 139;
+  --ui-border: 15 23 42 / 0.10;
+
+  /* Accent (Primary) */
+  --ui-ring: 99 102 241;        /* indigo-500 */
+  --ui-accent: 79 70 229;       /* indigo-600 */
+}
+
+.dark{
+  --ui-card: 17 24 39;          /* gray-900 */
+  --ui-surface: 3 7 18;         /* near-black */
+  --ui-text: 248 250 252;
+  --ui-muted: 148 163 184;
+  --ui-border: 255 255 255 / 0.10;
+
+  --ui-ring: 129 140 248;       /* indigo-400 */
+  --ui-accent: 99 102 241;      /* indigo-500 */
+}
+
+@layer components {
+
+  /* Layout helpers */
+  .ui-container { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
+  .ui-section   { @apply py-10 sm:py-12; }
+  .ui-divider   { @apply border-t border-black/10 dark:border-white/10; }
+
+  /* Surfaces */
+  .ui-card{
+    @apply rounded-2xl border shadow-sm;
+    background-color: rgb(var(--ui-card));
+    border-color: color-mix(in srgb, rgb(0 0 0 / 0) 0%, rgb(var(--ui-border)) 100%);
+  }
+
+  .ui-surface{
+    @apply rounded-2xl border;
+    background-color: rgb(var(--ui-surface));
+    border-color: color-mix(in srgb, rgb(0 0 0 / 0) 0%, rgb(var(--ui-border)) 100%);
+  }
+
+  /* Typography */
+  .ui-h1 { @apply text-2xl sm:text-3xl font-semibold tracking-tight text-gray-900 dark:text-white; }
+  .ui-h2 { @apply text-xl sm:text-2xl font-semibold tracking-tight text-gray-900 dark:text-white; }
+  .ui-p  { @apply text-sm text-gray-600 dark:text-gray-300 leading-6; }
+  .ui-muted { @apply text-xs text-gray-500 dark:text-gray-400; }
+
+  /* Buttons */
+  .ui-btn{
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold
+           transition active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+
+  .ui-btn-primary{
+    @apply ui-btn text-white shadow-sm;
+    background: linear-gradient(135deg, rgb(79 70 229) 0%, rgb(99 102 241) 55%, rgb(129 140 248) 100%);
+  }
+  .ui-btn-primary:hover{ filter: brightness(1.02); }
+
+  .ui-btn-outline{
+    @apply ui-btn border bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10;
+    border-color: color-mix(in srgb, rgb(0 0 0 / 0) 0%, rgb(var(--ui-border)) 100%);
+  }
+
+  .ui-btn-ghost{
+    @apply ui-btn bg-transparent hover:bg-black/5 dark:hover:bg-white/5;
+  }
+
+  /* Inputs */
+  .ui-input{
+    @apply w-full rounded-xl border bg-white/70 dark:bg-gray-900/60 px-3 py-2 text-sm
+           outline-none transition;
+    border-color: color-mix(in srgb, rgb(0 0 0 / 0) 0%, rgb(var(--ui-border)) 100%);
+  }
+  .ui-input:focus{
+    border-color: rgb(var(--ui-ring));
+    box-shadow: 0 0 0 4px color-mix(in srgb, rgb(var(--ui-ring)) 22%, transparent);
+  }
+
+  .ui-label{ @apply text-xs font-semibold text-gray-700 dark:text-gray-200; }
+  .ui-help { @apply text-xs text-gray-500 dark:text-gray-400; }
+
+  /* Badges */
+  .ui-badge{
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold
+           bg-black/5 dark:bg-white/5 border;
+    border-color: color-mix(in srgb, rgb(0 0 0 / 0) 0%, rgb(var(--ui-border)) 100%);
+  }
+
+  /* Table-like row */
+  .ui-row{
+    @apply flex items-center justify-between gap-3 rounded-xl border px-4 py-3
+           bg-black/[0.02] dark:bg-white/[0.03];
+    border-color: color-mix(in srgb, rgb(0 0 0 / 0) 0%, rgb(var(--ui-border)) 100%);
+  }
+  /* Header/Footer glass surface from tokens */
+  .ui-glass{
+    @apply backdrop-blur-md;
+    background-color: color-mix(in srgb, rgb(var(--ui-card)) 82%, transparent);
+    border-color: color-mix(in srgb, rgb(0 0 0 / 0) 0%, rgb(var(--ui-border)) 100%);
+  }
+
+  .ui-glass-strong{
+    @apply backdrop-blur-md;
+    background-color: color-mix(in srgb, rgb(var(--ui-card)) 92%, transparent);
+    border-color: color-mix(in srgb, rgb(0 0 0 / 0) 0%, rgb(var(--ui-border)) 100%);
+  }
+
+}
+
 }
 html.dark { --moon-cut: #030712; } /* خلفية دارك */
 html:not(.dark) { --moon-cut: #ffffff; } /* خلفية لايت */
