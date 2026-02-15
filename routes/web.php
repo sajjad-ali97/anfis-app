@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProjectController;
 
 
 /*
@@ -28,3 +29,15 @@ Route::get('/lang/{locale}', function ($locale) {
     cookie()->queue('locale', $locale, 60 * 24 * 365); // سنة
     return back();
 })->name('lang.switch');
+
+/*
+|--------------------------------------------------------------------------
+| ProjectS
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/projects/create', [ProjectController::class, 'create'])
+    ->name('projects.create');
+
+Route::post('/projects', [ProjectController::class, 'store'])
+    ->name('projects.store');

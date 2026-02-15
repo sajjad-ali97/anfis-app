@@ -40,4 +40,34 @@ return [
 
     'home_footer_note' => 'هذه الواجهة معدّة للعرض الأكاديمي وتقديم نتائج البحث.',
 
+
+
+
+
+    'project_badge' => 'تهيئة المشروع',
+    'create_project_title' => 'إنشاء مشروع جديد',
+    'create_project_subtitle' => 'أدخل معلومات المشروع الأساسية للبدء بخطوات الحساب.',
+
+    'project_info' => 'معلومات المشروع',
+    'project_info_hint' => 'املأ الحقول التالية بدقة لضمان أفضل نتائج لاحقًا.',
+
+    'project_title' => 'اسم المشروع',
+    'project_title_ph' => 'مثال: صيانة الطريق الرئيسي - كربلاء',
+
+    'governorate' => 'المحافظة',
+    'governorate_ph' => 'مثال: كربلاء',
+
+    'road_name' => 'اسم الطريق',
+    'road_name_ph' => 'مثال: طريق كربلاء - النجف',
+
+    'maintenance_date' => 'تاريخ الصيانة',
+    'maintenance_tip' => 'ملاحظة: دقة التاريخ تساعد لاحقًا في حساب HTS وترميز عمر الرصف.',
+
+    'create_project_btn' => 'إنشاء المشروع',
+    'back_home' => 'العودة للرئيسية',
+
+    'engineering_note_title' => 'ملاحظة هندسية',
+    'engineering_note_body' => 'هذا النموذج يدعم تحليل كلفة الصيانة اعتمادًا على مدخلات هندسية وترميز ثابت متوافق مع ANFIS.',
+
+    'research_project' => 'مشروع بحثي',
 ];

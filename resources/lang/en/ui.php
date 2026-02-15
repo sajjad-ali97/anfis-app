@@ -40,4 +40,35 @@ return [
 
     'home_footer_note' => 'This interface is designed for academic demonstration and research presentation purposes.',
 
+
+
+    'project_badge' => 'Project Setup',
+    'create_project_title' => 'Create New Project',
+    'create_project_subtitle' => 'Enter the basic project details to start the calculation workflow.',
+
+    'project_info' => 'Project Information',
+    'project_info_hint' => 'Fill the fields accurately to ensure better results later.',
+
+    'project_title' => 'Project Title',
+    'project_title_ph' => 'e.g., Karbala Main Road Maintenance',
+
+    'governorate' => 'Governorate',
+    'governorate_ph' => 'e.g., Karbala',
+
+    'road_name' => 'Road Name',
+    'road_name_ph' => 'e.g., Karbala – Najaf Highway',
+
+    'maintenance_date' => 'Maintenance Date',
+    'maintenance_tip' => 'Tip: Accurate dates improve HTS and pavement-age coding later.',
+
+    'create_project_btn' => 'Create Project',
+    'back_home' => 'Back to Home',
+
+    'engineering_note_title' => 'Engineering Note',
+    'engineering_note_body' => 'This model estimates maintenance cost using engineering inputs and a fixed ANFIS-compatible coding scheme.',
+
+    'research_project' => 'Research Project',
+
+
+
 ];

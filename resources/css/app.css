@@ -202,9 +202,13 @@
 
 @layer components {
 
+
+
+  .ui-page { @apply pt-8 sm:pt-10; } /* هاي هي المسافة الثابتة تحت الهيدر */
+
   /* Layout helpers */
   .ui-container { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
-  .ui-section   { @apply py-10 sm:py-12; }
+ .ui-section { @apply pb-8 sm:pb-10; }
   .ui-divider   { @apply border-t border-black/10 dark:border-white/10; }
 
   /* Surfaces */

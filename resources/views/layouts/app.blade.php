@@ -35,11 +35,24 @@
 
     @include('partials.header')
 
-    <main class="flex-1">
+
+<main class="flex-1 bg-[rgb(var(--ui-surface))]">
+    <div class="ui-container">
+        <div class="ui-page">
+            @yield('content')
+        </div>
+    </div>
+</main>
+
+
+
+
+
+    {{-- <main class="flex-1">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
             @yield('content')
         </div>
-    </main>
+    </main> --}}
 
     @include('partials.footer')
 
