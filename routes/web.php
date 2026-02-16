@@ -32,7 +32,7 @@ Route::get('/lang/{locale}', function ($locale) {
 
 /*
 |--------------------------------------------------------------------------
-| ProjectS
+| Project Page
 |--------------------------------------------------------------------------
 */
 
@@ -41,3 +41,15 @@ Route::get('/projects/create', [ProjectController::class, 'create'])
 
 Route::post('/projects', [ProjectController::class, 'store'])
     ->name('projects.store');
+
+
+/*
+|--------------------------------------------------------------------------
+| inputs Page
+|--------------------------------------------------------------------------
+*/
+Route::get('/projects/{project}/inputs', [ProjectController::class, 'inputsCreate'])
+    ->name('projects.inputs.create');
+
+Route::post('/projects/{project}/inputs', [ProjectController::class, 'inputsStore'])
+    ->name('projects.inputs.store');

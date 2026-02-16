@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="ui-section">
+<section  class="ui-section">
     <div class="ui-card overflow-hidden">
 
         {{-- HERO IMAGE (Full width داخل الكارد) --}}
@@ -35,7 +35,7 @@
         </div>
 
         {{-- BODY --}}
-        <div class="p-5 sm:p-7">
+        <div  id="create-project" class="p-5 sm:p-7">
             <div class="flex items-start justify-between gap-4">
                 <div>
                     <h2 class="ui-h2">{{ __('ui.project_info') }}</h2>
@@ -55,7 +55,7 @@
 
             </div>
 
-            <div class="ui-divider my-6"></div>
+            <div  class="ui-divider my-6"></div>
 
             {{-- FORM --}}
             <form method="POST" action="{{ route('projects.store') }}" class="space-y-5">

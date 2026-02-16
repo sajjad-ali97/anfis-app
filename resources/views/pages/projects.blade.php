@@ -3,6 +3,6 @@
 
 @section('content')
 <div class="card-soft p-6">
-    <h1 class="text-xl font-semibold">Projects Page</h1>
+    <h1 class="text-xl font-semibold">Projects Page بيالا</h1>
 </div>
 @endsection
