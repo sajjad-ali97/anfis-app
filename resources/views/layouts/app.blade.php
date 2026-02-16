@@ -40,7 +40,7 @@
 @if(session('success'))
     <div
         x-data="{ show: true }"
-        x-init="setTimeout(() => show = false, 7000)"
+        x-init="setTimeout(() => show = false, 4000)"
         x-show="show"
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 -translate-y-3 scale-95"
@@ -92,7 +92,7 @@
                 <div class="h-full"
                      style="width:100%;
                             background: linear-gradient(90deg, rgb(var(--ui-accent)), rgb(var(--ui-ring)));
-                            animation: toastbar 7s linear forwards;">
+                            animation: toastbar 4s linear forwards;">
                 </div>
             </div>
         </div>
@@ -120,11 +120,7 @@
 
 
 
-    {{-- <main class="flex-1">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-            @yield('content')
-        </div>
-    </main> --}}
+
 
     @include('partials.footer')
 
