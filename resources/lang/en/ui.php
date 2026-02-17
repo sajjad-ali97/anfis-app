@@ -133,7 +133,7 @@ return [
         'maintenance_type' => '1 = Preventive, 2 = Routine, 3 = Emergency',
         'soil_strength' => '1 = Weak, 2 = Medium, 3 = Strong',
         'pavement_type' => '1 = Asphalt, 2 = Mix (Asphalt + Concrete)',
-        'hts_days' => 'Number of days exceeding 45°C',
+        'hts_days' => 'Number of days exceeding 40°C',
     ],
 
     'options' => [
