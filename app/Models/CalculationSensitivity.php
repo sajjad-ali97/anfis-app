@@ -5,17 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Chart extends Model
+class CalculationSensitivity extends Model
 {
     protected $fillable = [
         'calculation_id',
-        'type',
-        'image_path',
-        'meta',
+        'bar_data',
+        'debug_payload',
+        'top_n',
+        'perturb_percent',
     ];
 
     protected $casts = [
-        'meta' => 'array',
+        'bar_data' => 'array',
+        'debug_payload' => 'array',
+        'top_n' => 'integer',
+        'perturb_percent' => 'float',
     ];
 
     public function calculation(): BelongsTo

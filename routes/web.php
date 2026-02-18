@@ -42,8 +42,13 @@ Route::get('/projects/create', [ProjectController::class, 'create'])
 Route::post('/projects', [ProjectController::class, 'store'])
     ->name('projects.store');
 
-Route::get('/projects/{project}/results', [ProjectController::class, 'results'])
+Route::get('/results/{calculation}', [ProjectController::class, 'results'])
     ->name('projects.results');
+
+Route::get('/results/{calculation}/report', [ProjectController::class, 'report'])
+    ->name('projects.report');
+
+
 /*
 |--------------------------------------------------------------------------
 | inputs Page

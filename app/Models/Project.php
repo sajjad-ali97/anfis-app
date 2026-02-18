@@ -11,12 +11,21 @@ class Project extends Model
         'title',
         'governorate',
         'road_name',
-        'construction_date',
         'maintenance_date',
+    ];
+
+    protected $casts = [
+        'maintenance_date' => 'date',
     ];
 
     public function calculations(): HasMany
     {
         return $this->hasMany(Calculation::class);
+    }
+
+    // (اختياري) آخر حساب للمشروع
+    public function latestCalculation()
+    {
+        return $this->hasOne(Calculation::class)->latestOfMany();
     }
 }

@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectInputsRequest;
 use App\Http\Requests\StoreProjectRequest;
+use App\Models\CalculationGauge;
+use App\Models\Calculation;
+use App\Models\CalculationSensitivity;
+use App\Models\CalculationExplanation;
 
 class ProjectController extends Controller
 {
@@ -30,13 +34,11 @@ class ProjectController extends Controller
     {
         $validated = $request->validated();
 
-        // حالياً: حفظ مؤقت بالسيشن (حسب اتفاقنا)
-        session()->put("anfis.inputs.project_{$project->id}", $validated);
 
         // 1) HtsService استخراج عدد الايام التي حرارتها اعلى من 40 من خلال عمر الطريق باستخدام
         $hts = app(\App\Services\Anfis\HtsService::class)
             ->calculate((int) $validated['pavement_age'], $project->maintenance_date);
-        $hts = 363;
+        // $hts = 363;
 
         // 2) ترتيب المدخلات من الفورم بحسب الترتيب الاساسي لمنطق الحساب ماتلاب
         $ordered13 = [
@@ -101,15 +103,86 @@ class ProjectController extends Controller
         $explanation = app(\App\Services\XAI\ExplanationService::class)
             ->generate($gauge, $sensitivity, $inputsAssoc);
 
+        // ===================================================================================
 
 
-        return redirect()->route('projects.results', $project);
+        //7) خزّن calculation
+
+        $calculation = Calculation::create([
+
+            'project_id' => $project->id,
+
+            'pavement_area_m2'      => $validated['pavement_area'],
+            'pavement_age_code'     => $validated['pavement_age'],
+            'pci_code'              => $validated['road_condition'],
+            'asphalt_thickness_cm'  => $validated['asphalt_thickness'],
+            'pavement_type_code'    => $validated['pavement_type'],
+            'maintenance_type_code' => $validated['maintenance_type'],
+            'aadt_code'             => $validated['traffic_volume'],
+            'aadt_heavy_code'       => $validated['aadt_heavy'],
+            'road_class_code'       => $validated['road_class'],
+            'hts_days_over_45'      => $hts,
+            'soil_strength_code'    => $validated['soil_strength'],
+            'median_islands'        => $validated['median_islands'],
+            'drainage_system'       => $validated['drainage_system'],
+
+            'estimated_cost'        => (int) round($cost),
+        ]);
+
+
+        //8) خزّن الكيج
+
+        CalculationGauge::create([
+
+            'calculation_id' => $calculation->id,
+
+            'a' => $gauge->a,
+
+            'label_key' => $gauge->label_key,
+            'label'     => $gauge->label, // اختياري
+
+            'range_min'   => $gauge->range_used['min'],
+            'range_max'   => $gauge->range_used['max'],
+            'range_color' => $gauge->range_used['color'],
+
+            'min' => $gauge->min,
+            'max' => $gauge->max,
+
+            'ranges_json' => $gauge->ranges,
+        ]);
+
+        //9)خزّن الحساسية
+        CalculationSensitivity::create([
+            'calculation_id' => $calculation->id,
+            'bar_data' => $sensitivity->bar_data,
+            'debug_payload' => $sensitivity->debug_payload,
+            'top_n' => config('sensitivity.top_n'),
+            'perturb_percent' => config('sensitivity.continuous_perturbation_percent'),
+        ]);
+
+        //9)خزّن الاسباب
+        CalculationExplanation::create([
+            'calculation_id' => $calculation->id,
+            'summary_ar' => $explanation->summary_ar,
+            'summary_en' => $explanation->summary_en,
+            'reasons_ar' => $explanation->reasons_ar,
+            'reasons_en' => $explanation->reasons_en,
+            'debug_payload' => $explanation->debug_payload,
+        ]);
+
+
+        return redirect()->route('projects.results', $calculation);
     }
 
-    public function results(Project $project)
+    public function results(Calculation $calculation)
     {
-        $cost = session("anfis.cost.project_{$project->id}");
+        $calculation->load([
+            'project',
+            'gauge',
+            'sensitivity',
+            'explanation'
+        ]);
 
-        return view('projects.results', compact('project', 'cost'));
+        return view('projects.results', compact('calculation'));
     }
 }
