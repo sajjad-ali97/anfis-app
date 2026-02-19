@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
+use Mpdf\Mpdf;
+use Mpdf\Config\ConfigVariables;
+use Mpdf\Config\FontVariables;
 
 
 /*
@@ -45,9 +48,6 @@ Route::post('/projects', [ProjectController::class, 'store'])
 Route::get('/results/{calculation}', [ProjectController::class, 'results'])
     ->name('projects.results');
 
-Route::get('/results/{calculation}/report', [ProjectController::class, 'report'])
-    ->name('projects.report');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -59,3 +59,33 @@ Route::get('/projects/{project}/inputs', [ProjectController::class, 'inputsCreat
 
 Route::post('/projects/{project}/inputs', [ProjectController::class, 'inputsStore'])
     ->name('projects.inputs.store');
+
+/*
+|--------------------------------------------------------------------------
+| report and pdf
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/projects/{project}/report', [ProjectController::class, 'report'])
+    ->name('projects.report');
+
+Route::post('/projects/{project}/report/pdf', [ProjectController::class, 'reportPdf'])
+    ->name('projects.report.pdf');
+
+
+
+
+
+
+Route::get('/debug/gd', function () {
+    return response()->json([
+        'php_version' => PHP_VERSION,
+        'sapi' => PHP_SAPI,
+        'gd_loaded' => extension_loaded('gd'),
+        'functions' => [
+            'imagecreatefrompng' => function_exists('imagecreatefrompng'),
+            'imagecreatetruecolor' => function_exists('imagecreatetruecolor'),
+        ],
+        'gd_info' => function_exists('gd_info') ? gd_info() : null,
+    ]);
+});

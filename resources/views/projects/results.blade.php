@@ -45,7 +45,7 @@
                     {{ $isAr ? 'نتائج الحساب' : 'Calculation Results' }}
                 </h1>
                 <p class="ui-p mt-2">
-                    {{ $isAr ? 'المشروع رقم' : 'Project #' }}:
+                    {{ $isAr ? 'المشروع رقم' : 'Project ' }}:
                     <span class="font-semibold text-gray-900 dark:text-white">#{{ $project->id }}</span>
                     @if($project->road_name)
                         <span class="mx-2 text-gray-400">•</span>
@@ -79,7 +79,7 @@
 
                 {{-- Report button --}}
                 <a class="ui-btn-primary ui-btn-lg"
-                   href="{{ route('projects.report', $calculation->id) }}">
+                   href="{{ route('projects.report', $calculation->project)  }}">
                     <span class="ico ico-folder"></span>
                     <span>{{ $isAr ? 'عرض التقرير' : 'View Report' }}</span>
                 </a>

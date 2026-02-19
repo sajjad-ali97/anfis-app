@@ -40,7 +40,7 @@
 @if(session('success'))
     <div
         x-data="{ show: true }"
-        x-init="setTimeout(() => show = false, 4000)"
+        x-init="setTimeout(() => show = false, 3000)"
         x-show="show"
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 -translate-y-3 scale-95"
@@ -92,7 +92,7 @@
                 <div class="h-full"
                      style="width:100%;
                             background: linear-gradient(90deg, rgb(var(--ui-accent)), rgb(var(--ui-ring)));
-                            animation: toastbar 4s linear forwards;">
+                            animation: toastbar 3s linear forwards;">
                 </div>
             </div>
         </div>
