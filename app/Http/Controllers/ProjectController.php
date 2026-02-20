@@ -17,6 +17,17 @@ use Mpdf\Config\FontVariables;
 
 class ProjectController extends Controller
 {
+
+
+ public function index()
+    {
+        $projects = Project::query()
+            ->latest('id')
+            ->get();
+
+        return view('pages.projects', compact('projects'));
+    }
+
     public function create()
     {
         return view('projects.create');

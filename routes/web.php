@@ -2,9 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
-use Mpdf\Mpdf;
-use Mpdf\Config\ConfigVariables;
-use Mpdf\Config\FontVariables;
+
 
 
 /*
@@ -14,7 +12,7 @@ use Mpdf\Config\FontVariables;
 */
 
 Route::view('/', 'pages.home')->name('home');
-Route::view('/projects', 'pages.projects')->name('projects');
+Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/contact', 'pages.contact')->name('contact');
 

@@ -348,6 +348,7 @@
     plot_bgcolor: plotBg,
     margin: { t: 20, r: 20, b: 90, l: 70 },
     font: { color: textColor, family:'inherit' },
+
     xaxis: {
       tickfont: { color: axisColor, size: 12 },
       tickcolor: axisColor,
@@ -380,16 +381,49 @@
   const form = document.getElementById('pdfForm');
 
   // JPEG: أصغر حجم + بدون alpha (أفضل للمPDF)
+
   async function toJpeg(el, w, h) {
     if (!el) return '';
-    return await Plotly.toImage(el, {
+
+    // نخزن layout القديم
+    const oldLayout = JSON.parse(JSON.stringify(el.layout || {}));
+
+    // نخليها "نسخة طباعة" بيضاء
+    await Plotly.relayout(el, {
+      paper_bgcolor: '#ffffff',
+      plot_bgcolor:  '#ffffff',
+      font: { color:'#111827' },
+      xaxis: Object.assign({}, (el.layout?.xaxis || {}), {
+        color:'#111827',
+        tickfont: { color:'#111827' },
+        gridcolor:'rgba(0,0,0,0.10)',
+        linecolor:'rgba(0,0,0,0.20)',
+      }),
+      yaxis: Object.assign({}, (el.layout?.yaxis || {}), {
+        color:'#111827',
+        tickfont: { color:'#111827' },
+        titlefont: { color:'#111827' },
+        gridcolor:'rgba(0,0,0,0.10)',
+        linecolor:'rgba(0,0,0,0.20)',
+        zerolinecolor:'rgba(0,0,0,0.18)',
+      }),
+    });
+
+    // نلتقط الصورة
+    const img = await Plotly.toImage(el, {
       format: 'jpeg',
       width: w,
       height: h,
       scale: 2,
       quality: 0.92
     });
+
+    // نرجع layout مثل ما كان
+    await Plotly.relayout(el, oldLayout);
+
+    return img;
   }
+
 
   if (btn && form) {
     btn.addEventListener('click', async () => {
@@ -413,6 +447,8 @@
       }
     });
   }
+  const isMobile = window.matchMedia('(max-width: 640px)').matches; // sm
+
 })();
 </script>
 @endsection

@@ -1,7 +1,37 @@
 @php
-  $dir = $isAr ? 'rtl' : 'ltr';
+  $dir   = $isAr ? 'rtl' : 'ltr';
   $align = $isAr ? 'right' : 'left';
   $muted = '#5b6472';
+
+  // Logos (absolute paths for mPDF)
+  $anfisLogo = public_path('images/hero.jpg');                // header left
+  $kkLogo    = public_path('images/uni/kk.png');              // footer right
+  $engLogo   = public_path('images/uni/engineering.png');     // footer right
+
+  // Cover text
+  $researchTitle = $isAr
+    ? 'نمذجة كلفة صيانة مشاريع الطرق في محافظة كربلاء باستخدام الشبكات العصبية الضبابية'
+    : 'Modeling the Maintenance Costs of Road Projects in Karbala Governorate using Fuzzy Neural Network';
+
+  $researcher = 'ALI SAAD AHMED';
+  $supervisor = 'Assist. Prof. Dr. Gafel Kareem Aswed';
+
+  // charts (names you already send from report page)
+  // IMPORTANT: keep SAME variable names you pass from controller
+  $barImg   = $barPng   ?? null;
+  $gaugeImg = $gaugePng ?? null;
+
+  // reasons array
+  $reasons = $isAr ? ($calculation->explanation?->reasons_ar ?? []) : ($calculation->explanation?->reasons_en ?? []);
+  if (!is_array($reasons)) $reasons = [];
+
+  // summary
+  $summary = $isAr ? ($calculation->explanation?->summary_ar ?? '') : ($calculation->explanation?->summary_en ?? '');
+
+  // top
+  $top = $topOne ?? null;
+  $topLabel = $top ? ($isAr ? ($top['label_ar'] ?? $top['key']) : ($top['label_en'] ?? $top['key'])) : null;
+  $topPct   = $top ? (float)($top['impact_percent'] ?? 0) : null;
 @endphp
 <!doctype html>
 <html lang="{{ $isAr ? 'ar' : 'en' }}" dir="{{ $dir }}">
@@ -9,145 +39,106 @@
   <meta charset="utf-8">
 
   <style>
-    /* ===== Page ===== */
-    @page {
-      margin: 14mm 12mm 16mm 12mm;
+    /* ===== mPDF Page with real header/footer spacing ===== */
+    @page{
+      margin: 26mm 12mm 22mm 12mm; /* top right bottom left */
+      header: page-header;
+      footer: page-footer;
     }
 
     body{
       font-family: cairo, sans-serif;
       font-size: 11pt;
-      color: #0f172a; /* slate-900 */
+      color:#0f172a;
       direction: {{ $dir }};
       text-align: {{ $align }};
-      line-height: 1.65;
+      line-height: 1.6;
     }
 
-    /* ===== Helpers ===== */
-    .muted{ color: {{ $muted }}; font-size: 9.8pt; }
-    .hr{ height:1px; background:#e5e7eb; margin: 10pt 0; }
-    .small{ font-size: 9.5pt; }
-    .mt8{ margin-top:8pt; }
-    .mt10{ margin-top:10pt; }
-    .mt12{ margin-top:12pt; }
-    .nowrap{ white-space:nowrap; }
+    /* ===== Header / Footer (mPDF) ===== */
+    .hdr, .ftr { width:100%; }
+    .hdr td, .ftr td { vertical-align: middle; }
 
-    /* ===== Layout wrappers ===== */
-    .page-wrap{
-      background:#f6f8fc;
-      border: 1px solid #e6eaf2;
-      border-radius: 18px;
-      padding: 14pt;
+    .hdr{
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 3mm;
     }
-
-    /* ===== Header Card ===== */
-    .hero{
-      background: #ffffff;
-      border: 1px solid #e6eaf2;
-      border-radius: 18px;
-      padding: 14pt;
-    }
-
-    .hero-title{
-      font-size: 20pt;
-      font-weight: 800;
-      margin: 4pt 0 2pt;
-      letter-spacing: .2pt;
-    }
-
-    .hero-sub{
-      margin: 0;
-      color: {{ $muted }};
-      font-size: 10pt;
-    }
-
-    .badges{
-      margin-bottom: 6pt;
-    }
-    .badge{
-      display:inline-block;
-      padding: 4pt 10pt;
-      border-radius: 999px;
-      font-size: 9pt;
-      font-weight: 700;
-      border: 1px solid #dbe2f0;
-      background:#f2f5fb;
-      color:#27324a;
-      margin-{{ $isAr ? 'left' : 'right' }}: 6pt;
-    }
-
-    .meta{
-      margin-top: 8pt;
-      padding-top: 8pt;
-      border-top: 1px dashed #e5e7eb;
-      font-size: 9.8pt;
+    .ftr{
+      border-top: 1px solid #e5e7eb;
+      padding-top: 2.5mm;
+      font-size: 9.5pt;
       color: {{ $muted }};
     }
+
+    .hdr-left { width:28%; text-align: left; }
+    .hdr-right{ width:72%; text-align: right; font-weight: 900; font-size: 10.5pt; }
+
+    .logo-anfis{ height: 10mm; max-width: 40mm; object-fit: contain; }
+    .logo-small{ height: 9mm; max-width: 18mm; object-fit: contain; }
+
+    .ftr-left  { width:70%; text-align: {{ $align }}; }
+    .ftr-right { width:30%; text-align: right; }
+
+    .page-no{ white-space: nowrap; }
+
+    /* ===== Layout ===== */
+    .page{ page-break-after: always; }
+    .page.last{ page-break-after: auto; }
+
+    .center{ text-align:center; }
+    .muted{ color: {{ $muted }}; }
+
+    .title{ font-size: 18pt; font-weight: 900; margin: 0; }
+    .sub{ font-size: 11pt; margin: 6pt 0 0; }
 
     /* ===== Cards ===== */
     .card{
-      background:#ffffff;
-      border: 1px solid #e6eaf2;
-      border-radius: 18px;
+      border:1px solid #e6eaf2;
+      border-radius: 16px;
       padding: 12pt;
-      margin-top: 12pt;
-      box-shadow: 0 6px 18px rgba(15,23,42,.06);
+      margin-top: 10pt;
+      background:#fff;
       page-break-inside: avoid;
     }
+    .card-h{ font-size: 13.5pt; font-weight: 900; margin:0 0 8pt; }
 
-    .card-h{
-      font-size: 13.5pt;
-      font-weight: 800;
-      margin: 0 0 8pt;
-    }
-
-    .card-kicker{
-      font-size: 9.5pt;
-      color: {{ $muted }};
-      margin-top: -2pt;
-    }
-
-    /* ===== Two columns using table ===== */
-    .grid{
-      width:100%;
-      border-collapse: separate;
-      border-spacing: 10pt;
-      table-layout: fixed;
-    }
+    /* ===== Project fields (label فوق value مضبوط) ===== */
+    .grid{ width:100%; border-collapse: separate; border-spacing: 10pt; table-layout: fixed; }
     .grid td{ vertical-align: top; }
 
     .field{
-      border: 1px solid #e6eaf2;
+      border:1px solid #e6eaf2;
       border-radius: 14px;
       padding: 10pt;
       background:#fbfcff;
     }
     .field-label{
-      color: {{ $muted }};
+      display:block;
       font-size: 9.5pt;
-      font-weight: 700;
-      margin-bottom: 2pt;
+      font-weight: 900;
+      color: {{ $muted }};
+      margin-bottom: 4pt;
     }
     .field-val{
-      font-size: 11.2pt;
-      font-weight: 700;
+      display:block;
+      font-size: 11.5pt;
+      font-weight: 900;
       color:#0f172a;
     }
 
-    /* ===== Table ===== */
+    /* ===== Tables ===== */
     table.data{
       width:100%;
       border-collapse: collapse;
       margin-top: 8pt;
-      overflow: hidden;
       border-radius: 14px;
       border: 1px solid #e6eaf2;
     }
     table.data thead th{
       background:#f2f5fb;
       color:#1f2a44;
-      font-weight: 800;
-      font-size: 10.2pt;
+      font-weight:900;
+      font-size:10.2pt;
       padding: 9pt 10pt;
       border-bottom: 1px solid #e6eaf2;
       text-align: {{ $align }};
@@ -155,121 +146,125 @@
     table.data tbody td{
       padding: 9pt 10pt;
       border-bottom: 1px solid #eef2f7;
-      font-size: 10.4pt;
+      font-size:10.4pt;
       text-align: {{ $align }};
     }
-    table.data tbody tr:nth-child(even) td{
-      background:#fbfcff;
-    }
+    table.data tbody tr:nth-child(even) td{ background:#fbfcff; }
     .num{ text-align: {{ $isAr ? 'left' : 'right' }}; direction:ltr; }
 
     /* ===== Result box ===== */
     .result-box{
-      border-radius: 18px;
-      padding: 14pt;
+      border-radius: 16px;
+      padding: 12pt;
       border: 1px solid #e6eaf2;
-      background: linear-gradient(180deg,#ffffff 0%, #fbfcff 100%);
+      background: #fbfcff;
     }
-    .result-label{
-      color: {{ $muted }};
-      font-size: 10pt;
-      font-weight: 800;
-      margin: 0;
-    }
-    .result-value{
-      font-size: 24pt;
-      font-weight: 900;
-      margin: 4pt 0 6pt;
-      letter-spacing: .3pt;
-    }
-
-    .pill{
-      display:inline-block;
-      border-radius: 999px;
-      padding: 5pt 10pt;
-      font-size: 9.5pt;
-      font-weight: 800;
-      background:#eef2ff;
-      color:#3730a3;
-      border:1px solid #dbe2f0;
-    }
+    .result-label{ color: {{ $muted }}; font-size: 10pt; font-weight: 900; margin: 0; }
+    .result-value{ font-size: 24pt; font-weight: 900; margin: 4pt 0 8pt; }
 
     /* ===== Charts ===== */
     .chart-wrap{
       border: 1px solid #e6eaf2;
-      border-radius: 18px;
-      padding: 10pt;
-      background:#ffffff;
-      page-break-inside: avoid;
-    }
-    .chart-title{
-      font-size: 11pt;
-      font-weight: 900;
-      margin: 0;
-    }
-    .chart-sub{
-      margin: 2pt 0 8pt;
-      color: {{ $muted }};
-      font-size: 9.4pt;
-    }
-    img.chart-img{
-      width: 100%;
-      border-radius: 14px;
-      border: 1px solid #eef2f7;
-      padding: 6pt;
-      background:#fbfcff;
-    }
-
-    /* ===== Reasons ===== */
-    .reason{
-      border: 1px solid #e6eaf2;
       border-radius: 16px;
       padding: 10pt;
-      background:#ffffff;
-      margin-top: 10pt;
+      background:#fff;
       page-break-inside: avoid;
     }
-    .reason b{ font-weight: 900; }
+    .chart-title{ font-size: 11pt; font-weight: 900; margin: 0; }
+    .chart-sub{ margin: 2pt 0 8pt; color: {{ $muted }}; font-size: 9.4pt; }
 
-    /* ===== Footer note ===== */
-    .note{
-      color: {{ $muted }};
-      font-size: 9.4pt;
-      margin-top: 6pt;
+    img.chart-img{
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #eef2f7;
+      padding: 6pt;
+      background:#fff; /* مهم: بياض */
     }
 
-    /* ===== Page breaks ===== */
-    .page-break{ page-break-before: always; }
+    /* ===== Bullets ===== */
+    .bullets{
+      margin: 0;
+      padding-{{ $isAr ? 'right' : 'left' }}: 18pt;
+    }
+    .bullets li{ margin: 6pt 0; }
 
   </style>
 </head>
 <body>
 
-  <div class="page-wrap">
+  {{-- mPDF Header --}}
+  <htmlpageheader name="page-header">
+    <table class="hdr" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="hdr-left">
+          @if(file_exists($anfisLogo))
+            <img class="logo-anfis" src="{{ $anfisLogo }}" alt="ANFIS">
+          @endif
+        </td>
+        <td class="hdr-right">
+          {{ $project->title ?? ($isAr ? 'تقرير مشروع' : 'Project Report') }}
+        </td>
+      </tr>
+    </table>
+  </htmlpageheader>
 
-    {{-- HERO --}}
-    <div class="hero">
-      <div class="badges">
-        <span class="badge">ANFIS</span>
-        <span class="badge">XAI</span>
+  {{-- mPDF Footer --}}
+  <htmlpagefooter name="page-footer">
+    <table class="ftr" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="ftr-left">
+          {{ $isAr ? 'الباحث:' : 'Researcher:' }} <b>{{ $researcher }}</b>
+          &nbsp;|&nbsp;
+          {{ $isAr ? 'المشرف:' : 'Supervisor:' }} <b>{{ $supervisor }}</b>
+          &nbsp;|&nbsp;
+          <span class="page-no">
+            {{ $isAr ? 'الصفحة' : 'Page' }} {PAGENO} / {nbpg}
+          </span>
+        </td>
+        <td class="ftr-right">
+          @if(file_exists($kkLogo))
+            <img class="logo-small" src="{{ $kkLogo }}" alt="KK">
+          @endif
+          @if(file_exists($engLogo))
+            <img class="logo-small" src="{{ $engLogo }}" alt="ENG" style="margin-left:6pt;">
+          @endif
+        </td>
+      </tr>
+    </table>
+  </htmlpagefooter>
+
+  {{-- ===================== Page 1: Cover ===================== --}}
+  <div class="page">
+    <div class="center" style="margin-top: 18mm;">
+      <div class="muted">{{ $isAr ? 'وزارة التعليم العالي والبحث العلمي' : 'Ministry of Higher Education and Scientific Research' }}</div>
+      <div style="font-weight:900; margin-top:4pt;">
+        {{ $isAr ? 'كلية الهندسة - جامعة كربلاء' : 'College of Engineering - University of Karbala' }}
       </div>
 
-      <div class="hero-title">{{ $isAr ? 'تقرير المشروع' : 'Project Report' }}</div>
-      <p class="hero-sub">
-        {{ $isAr ? 'يعرض هذا التقرير نتائج النموذج والتحليل التفسيري للمشروع.' : 'This report shows model outputs and explanatory analysis.' }}
-      </p>
+      <div style="margin-top:18mm;">
+        <p class="title">{{ $researchTitle }}</p>
+        <p class="sub muted">{{ $isAr ? 'سنة البحث: 2026' : 'Year: 2026' }}</p>
+      </div>
 
-      <div class="meta">
-        {{ $isAr ? 'تاريخ التقرير:' : 'Report Date:' }}
-        <span class="nowrap">{{ $reportDate->format('Y-m-d H:i') }}</span>
-        &nbsp;—&nbsp;
-        {{ $isAr ? 'رقم المشروع:' : 'Project ID:' }} <b>#{{ $project->id }}</b>
-        &nbsp;—&nbsp;
-        {{ $isAr ? 'رقم الحساب:' : 'Calculation ID:' }} <b>#{{ $calculation->id }}</b>
+      <div style="margin-top:26mm;">
+        <table style="width:100%; border-collapse:collapse;">
+          <tr>
+            <td style="width:50%; text-align: {{ $align }};">
+              <div style="font-weight:900;">{{ $isAr ? 'اسم الباحث' : 'Researcher Name' }}</div>
+              <div style="font-weight:900;">{{ $researcher }}</div>
+            </td>
+            <td style="width:50%; text-align: {{ $isAr ? 'left' : 'right' }};">
+              <div style="font-weight:900;">{{ $isAr ? 'المشرف' : 'Supervisor' }}</div>
+              <div style="font-weight:900;">{{ $supervisor }}</div>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
+  </div>
 
-    {{-- Project info --}}
+  {{-- ===================== Page 2: Project + Inputs ===================== --}}
+  <div class="page">
     <div class="card">
       <div class="card-h">{{ $isAr ? 'معلومات المشروع' : 'Project Information' }}</div>
 
@@ -277,38 +272,36 @@
         <tr>
           <td>
             <div class="field">
-              <div class="field-label">{{ $isAr ? 'اسم المشروع' : 'Project Title' }}</div>
-              <div class="field-val">{{ $project->title ?? '-' }}</div>
+              <span class="field-label">{{ $isAr ? 'اسم المشروع' : 'Project Title' }}</span>
+              <span class="field-val">{{ $project->title ?? '-' }}</span>
             </div>
           </td>
           <td>
             <div class="field">
-              <div class="field-label">{{ $isAr ? 'المحافظة' : 'Governorate' }}</div>
-              <div class="field-val">{{ $project->governorate ?? '-' }}</div>
+              <span class="field-label">{{ $isAr ? 'المحافظة' : 'Governorate' }}</span>
+              <span class="field-val">{{ $project->governorate ?? '-' }}</span>
             </div>
           </td>
         </tr>
         <tr>
           <td>
             <div class="field">
-              <div class="field-label">{{ $isAr ? 'اسم الطريق' : 'Road Name' }}</div>
-              <div class="field-val">{{ $project->road_name ?? '-' }}</div>
+              <span class="field-label">{{ $isAr ? 'اسم الطريق' : 'Road Name' }}</span>
+              <span class="field-val">{{ $project->road_name ?? '-' }}</span>
             </div>
           </td>
           <td>
             <div class="field">
-              <div class="field-label">{{ $isAr ? 'تاريخ الصيانة' : 'Maintenance Date' }}</div>
-              <div class="field-val">{{ $project->maintenance_date?->format('Y-m-d') ?? '-' }}</div>
+              <span class="field-label">{{ $isAr ? 'تاريخ الصيانة' : 'Maintenance Date' }}</span>
+              <span class="field-val">{{ $project->maintenance_date?->format('Y-m-d') ?? '-' }}</span>
             </div>
           </td>
         </tr>
       </table>
     </div>
 
-    {{-- Inputs --}}
     <div class="card">
       <div class="card-h">{{ $isAr ? 'مدخلات النموذج (13)' : 'Model Inputs (13)' }}</div>
-      <div class="card-kicker">{{ $isAr ? 'تم تحويل الأكواد إلى نصوص لسهولة القراءة داخل التقرير.' : 'Codes are mapped into readable labels for this report.' }}</div>
 
       <table class="data">
         <thead>
@@ -327,8 +320,10 @@
         </tbody>
       </table>
     </div>
+  </div>
 
-    {{-- Results summary --}}
+  {{-- ===================== Page 3: Results + Charts ===================== --}}
+  <div class="page">
     <div class="card">
       <div class="card-h">{{ $isAr ? 'النتائج' : 'Results' }}</div>
 
@@ -336,42 +331,36 @@
         <p class="result-label">{{ $isAr ? 'الكلفة الكلية المقدّرة' : 'Estimated Total Cost' }}</p>
         <div class="result-value">
           {{ number_format((int)$calculation->estimated_cost) }}
-          <span style="font-size:11pt; font-weight:700; color:{{ $muted }};">{{ $isAr ? 'دينار' : 'IQD' }}</span>
+          <span style="font-size:11pt; font-weight:800; color:{{ $muted }};">{{ $isAr ? 'دينار' : 'IQD' }}</span>
         </div>
 
-        @if($topLabel)
-          <div class="mt8">
-            <span class="pill">{{ $isAr ? 'أعلى عامل تأثيرًا' : 'Top Influencer' }}</span>
-            <span style="font-weight:900; margin-{{ $isAr ? 'right' : 'left' }}: 8pt;">
-              {{ $topLabel }}
-            </span>
-            <span class="muted">({{ number_format((float)$topPct,2) }}%)</span>
+        @if(!empty($topLabel))
+          <div class="muted">
+            {{ $isAr ? 'أعلى عامل تأثيراً:' : 'Top Influencer:' }}
+            <b style="color:#0f172a">{{ $topLabel }}</b>
+            ({{ number_format((float)$topPct,2) }}%)
           </div>
         @endif
 
-        @if($summary)
-          <div class="mt10" style="color:#0f172a;">
-            {{ $summary }}
-          </div>
+        @if(!empty($summary))
+          <div style="margin-top:10pt;">{{ $summary }}</div>
         @endif
       </div>
     </div>
 
-    {{-- Charts (two columns like your screenshot) --}}
     <div class="card">
-      <div class="card-h">{{ $isAr ? 'الرسوم البيانية' : 'Charts' }}</div>
+      <div class="card-h">{{ $isAr ? 'المخططات' : 'Charts' }}</div>
 
       <table class="grid">
         <tr>
-          {{-- In RTL: right column first visually, but table order is fine because dir=rtl --}}
           <td>
             <div class="chart-wrap">
               <p class="chart-title">{{ $isAr ? 'Sensitivity (Impact %)' : 'Sensitivity (Impact %)' }}</p>
-              <p class="chart-sub">{{ $isAr ? 'المدخلات الأكثر تأثيرًا على الكلفة.' : 'Most influential inputs on cost.' }}</p>
-              @if($barPng)
-                <img class="chart-img" src="{{ $barPng }}" alt="Bar Chart">
+              <p class="chart-sub">{{ $isAr ? 'المدخلات الأكثر تأثيراً على الكلفة.' : 'Most impactful inputs on cost.' }}</p>
+              @if(!empty($barImg))
+                <img class="chart-img" src="{{ $barImg }}" alt="Bar Chart">
               @else
-                <div class="muted">{{ $isAr ? 'لا يوجد مخطط حالياً.' : 'Chart is not available.' }}</div>
+                <div class="muted">{{ $isAr ? 'لا يوجد مخطط.' : 'No chart available.' }}</div>
               @endif
             </div>
           </td>
@@ -379,40 +368,38 @@
           <td>
             <div class="chart-wrap">
               <p class="chart-title">{{ $isAr ? 'Gauge (A Index)' : 'Gauge (A Index)' }}</p>
-              <p class="chart-sub">{{ $isAr ? 'A = الكلفة/المساحة ضمن رينجات.' : 'A = cost/area within predefined ranges.' }}</p>
-              @if($gaugePng)
-                <img class="chart-img" src="{{ $gaugePng }}" alt="Gauge">
+              <p class="chart-sub">{{ $isAr ? 'A = الكلفة/المساحة ضمن رينجات.' : 'A = cost/area within ranges.' }}</p>
+              @if(!empty($gaugeImg))
+                <img class="chart-img" src="{{ $gaugeImg }}" alt="Gauge">
               @else
-                <div class="muted">{{ $isAr ? 'لا يوجد مخطط حالياً.' : 'Chart is not available.' }}</div>
+                <div class="muted">{{ $isAr ? 'لا يوجد مخطط.' : 'No chart available.' }}</div>
               @endif
             </div>
           </td>
         </tr>
       </table>
-
-      <div class="note">
-        {{ $isAr ? 'ملاحظة: تم تصدير الرسوم كصور (JPEG) لضمان التوافق داخل PDF.' : 'Note: Charts are exported as JPEG images for PDF compatibility.' }}
-      </div>
     </div>
+  </div>
 
-    {{-- Reasons --}}
+  {{-- ===================== Page 4: Reasons ===================== --}}
+  <div class="page">
     <div class="card">
       <div class="card-h">{{ $isAr ? 'الأسباب' : 'Reasons' }}</div>
-      <div class="card-kicker">{{ $isAr ? 'تفسير مختصر وفق XAI.' : 'Short explanation based on XAI.' }}</div>
 
       @if(!empty($reasons))
-        @foreach($reasons as $idx => $r)
-          <div class="reason">
-            <b>{{ $isAr ? 'سبب' : 'Reason' }} {{ $idx + 1 }}:</b>
-            <div class="mt8">{{ $r }}</div>
-          </div>
-        @endforeach
+        <ul class="bullets">
+          @foreach($reasons as $r)
+            <li>{{ $r }}</li>
+          @endforeach
+        </ul>
       @else
         <div class="muted">{{ $isAr ? 'لا توجد أسباب حالياً.' : 'No reasons available yet.' }}</div>
       @endif
     </div>
+  </div>
 
-    {{-- Methodology --}}
+  {{-- ===================== Page 5: Methodology ===================== --}}
+  <div class="page last">
     <div class="card">
       <div class="card-h">{{ $isAr ? 'منهجية الحساب' : 'Methodology' }}</div>
 
@@ -424,7 +411,7 @@
           </tr>
           <tr>
             <td><b>Gauge</b></td>
-            <td>{{ $isAr ? 'تم حساب مؤشر A = الكلفة/المساحة وتصنيفه ضمن رينجات محددة.' : 'A = cost/area and classified within predefined ranges.' }}</td>
+            <td>{{ $isAr ? 'تم حساب مؤشر A = الكلفة/المساحة وتصنيفه ضمن رينجات محددة.' : 'A = cost/area classified into predefined ranges.' }}</td>
           </tr>
           <tr>
             <td><b>Sensitivity</b></td>
@@ -432,12 +419,16 @@
           </tr>
           <tr>
             <td><b>XAI</b></td>
-            <td>{{ $isAr ? 'تم توليد تفسير نصي يربط أعلى المؤثرات بتصنيف الكلفة النهائي.' : 'Text explanation links top influencers to the final cost class.' }}</td>
+            <td>{{ $isAr ? 'تم توليد تفسير نصي يربط أعلى المؤثرات بتصنيف الكلفة النهائي.' : 'Text explanation links top influencers to final cost class.' }}</td>
           </tr>
         </tbody>
       </table>
-    </div>
 
-  </div> {{-- /page-wrap --}}
+      <div class="muted" style="margin-top:10pt;">
+        {{ $isAr ? 'ملاحظة: سيتم تطوير قسم المنهجية لاحقاً بشكل موسّع.' : 'Note: Methodology section will be expanded later.' }}
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
