@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\QuickAnalysisController;
 
 
 
@@ -18,11 +19,17 @@ Route::view('/contact', 'pages.contact')->name('contact');
 
 /*
 |--------------------------------------------------------------------------
+| quick-analysis
+|--------------------------------------------------------------------------
+*/
+Route::match(['GET', 'POST'], '/quick-analysis', QuickAnalysisController::class)
+    ->name('quick.analysis');
+
+/*
+|--------------------------------------------------------------------------
 | Language Switch
 |--------------------------------------------------------------------------
 */
-
-
 
 Route::get('/lang/{locale}', function ($locale) {
     abort_unless(in_array($locale, ['ar', 'en']), 404);

@@ -225,10 +225,11 @@
                 {{ __('ui.contact') }}
             </a>
 
-            <a href="#" @click="open=false"
-               class="mt-2 ui-btn-primary px-4 py-3 w-full justify-center">
+            <a href="{{ route('quick.analysis') }}"
+                @click="open=false"
+                class="mt-2 ui-btn-primary px-4 py-3 w-full justify-center">
                 {{ __('ui.quick_analysis') }}
-            </a>
+             </a>
 
         </nav>
     </div>
