@@ -424,9 +424,7 @@
         </tbody>
       </table>
 
-      <div class="muted" style="margin-top:10pt;">
-        {{ $isAr ? 'ملاحظة: سيتم تطوير قسم المنهجية لاحقاً بشكل موسّع.' : 'Note: Methodology section will be expanded later.' }}
-      </div>
+      
     </div>
   </div>
 

@@ -133,7 +133,7 @@
         <div class="flex items-center justify-between gap-3">
           <div class="min-w-0">
             <div class="ui-label">{{ $isAr ? 'Gauge (A Index)' : 'Gauge (A Index)' }}</div>
-            <div class="ui-muted mt-1">{{ $isAr ? 'A = الكلفة/المساحة ضمن الرينجات.' : 'A = cost/area within predefined ranges.' }}</div>
+            <div class="ui-muted mt-1">{{ $isAr ? 'A = الكلفة/المساحة ضمن المستويات.' : 'A = cost/area within predefined ranges.' }}</div>
           </div>
           <span class="ui-badge">{{ $calculation->gauge?->label ?? $calculation->gauge?->label_key ?? '' }}</span>
         </div>
@@ -200,7 +200,7 @@
     <div class="mt-4 ui-surface p-5 text-sm leading-7 text-gray-800 dark:text-gray-100">
       <ul class="list-disc ms-5 space-y-2">
         <li>{{ $isAr ? 'تم استخدام نموذج ANFIS لتقدير الكلفة اعتماداً على 13 مدخلاً.' : 'ANFIS model estimates cost based on 13 inputs.' }}</li>
-        <li>{{ $isAr ? 'تم حساب A = الكلفة/المساحة ثم تصنيفها ضمن رينجات (Gauge).' : 'A = cost/area then classified into gauge ranges.' }}</li>
+        <li>{{ $isAr ? 'تم حساب A = الكلفة/المساحة ثم تصنيفها ضمن مستويات (Gauge).' : 'A = cost/area then classified into gauge ranges.' }}</li>
         <li>{{ $isAr ? 'تم استخراج الحساسية عبر تغيير المدخلات وقياس تأثيرها كنسبة مئوية.' : 'Sensitivity is computed by perturbing inputs and measuring impact percentage.' }}</li>
         <li>{{ $isAr ? 'تم توليد تفسير نصي يربط أعلى المؤثرات بتصنيف الكلفة.' : 'Textual explanation links top influencers to final cost class.' }}</li>
       </ul>

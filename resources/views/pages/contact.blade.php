@@ -9,14 +9,14 @@
                 <h1 class="ui-h1">{{ app()->getLocale()==='ar' ? 'التواصل' : 'Contact' }}</h1>
                 <p class="ui-p mt-2">
                     {{ app()->getLocale()==='ar'
-                        ? 'هذه صفحة تواصل تجريبية. كل المعلومات حالياً وهمية وتكدر تعدلها لاحقاً.'
-                        : 'This is a demo contact page. All information is placeholder and can be updated later.'
+                        ? ' معلومات التواصل أدناه .'
+                        : 'Contact information below.'
                     }}
                 </p>
             </div>
 
             <span class="ui-badge">
-                {{ app()->getLocale()==='ar' ? 'ستاتك' : 'Static' }}
+                {{ app()->getLocale()==='ar' ? 'ثابتة' : 'Static' }}
             </span>
         </div>
 
@@ -39,8 +39,8 @@
                         </div>
                         <div class="ui-muted mt-1">
                             {{ app()->getLocale()==='ar'
-                                ? 'قسم/كلية (وهمي حالياً)'
-                                : 'Department/College (placeholder)'
+                                ? 'كلية الهندسة/قسم الهندسة المدنية'
+                                : 'Faculty of Engineering/Department of Civil Engineering'
                             }}
                         </div>
                     </div>
@@ -51,8 +51,8 @@
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'العنوان' : 'Address' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white text-right">
                             {{ app()->getLocale()==='ar'
-                                ? 'كربلاء، العراق (عنوان وهمي)'
-                                : 'Karbala, Iraq (placeholder address)'
+                                ? 'كربلاء، العراق (فريحة)'
+                                : 'Karbala, Iraq (Feriha)'
                             }}
                         </span>
                     </div>
@@ -60,21 +60,25 @@
                     <div class="ui-row">
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'الهاتف' : 'Phone' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                            +964 000 000 0000
+                             +964 781 074 7747
                         </span>
                     </div>
 
-                    <div class="ui-row">
-                        <span class="ui-label">{{ app()->getLocale()==='ar' ? 'البريد' : 'Email' }}</span>
-                        <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                            info@example.edu
-                        </span>
-                    </div>
+                 <div class="ui-row">
+    <span class="ui-label">
+        {{ app()->getLocale()==='ar' ? 'البريد' : 'Email' }}
+    </span>
+
+    <a href="mailto:civil.engineering@uokerbala.edu.iq"
+       class="text-sm font-semibold text-gray-900 dark:text-white hover:underline">
+        civil.engineering@uokerbala.edu.iq
+    </a>
+</div>
 
                     <div class="ui-row">
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'واتساب' : 'WhatsApp' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                            +964 700 000 0000
+                            +964 781 074 7747
                         </span>
                     </div>
                 </div>
@@ -82,22 +86,20 @@
                 <div class="mt-5 pt-4 ui-divider"></div>
 
                 <div class="mt-4 flex flex-col gap-2">
-                    <a href="#" class="ui-btn-primary w-full">
-                        <span class="ico ico-mail"></span>
-                        {{ app()->getLocale()==='ar' ? 'رابط المقترحات' : 'Suggestions Link' }}
-                    </a>
-                    <a href="#" class="ui-btn-outline w-full">
-                        <span class="ico ico-info"></span>
-                        {{ app()->getLocale()==='ar' ? 'صفحة الجامعة' : 'University Page' }}
-                    </a>
+                  <a href="mailto:eng.civil.coor@uokerbala.edu.iq" class="ui-btn-primary w-full">
+    <span class="ico ico-mail"></span>
+    {{ app()->getLocale()==='ar' ? 'رابط المقترحات' : 'Suggestions Link' }}
+</a>
+                   <a href="https://eng.uokerbala.edu.iq/wp/%d9%82%d8%b3%d9%85-%d8%a7%d9%84%d9%87%d9%86%d8%af%d8%b3%d8%a9-%d8%a7%d9%84%d9%85%d8%af%d9%86%d9%8a%d8%a9-4/"
+   target="_blank"
+   rel="noopener noreferrer"
+   class="ui-btn-outline w-full">
+    <span class="ico ico-info"></span>
+    {{ app()->getLocale()==='ar' ? 'صفحة الجامعة' : 'University Page' }}
+</a>
                 </div>
 
-                <p class="ui-help mt-4">
-                    {{ app()->getLocale()==='ar'
-                        ? 'ملاحظة: استبدل الشعار والمعلومات لاحقاً.'
-                        : 'Note: Replace logo and details later.'
-                    }}
-                </p>
+
             </div>
 
             {{-- ===== Researcher Card ===== --}}
@@ -115,8 +117,8 @@
                         </div>
                         <div class="ui-muted mt-1">
                             {{ app()->getLocale()==='ar'
-                                ? 'باحث/طالب دراسات عليا (وهمي حالياً)'
-                                : 'Researcher / Postgraduate (placeholder)'
+                                ? 'باحث/طالب دراسات عليا)'
+                                : 'Researcher / Postgraduate '
                             }}
                         </div>
                     </div>
@@ -127,8 +129,8 @@
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'الاختصاص' : 'Field' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white text-right">
                             {{ app()->getLocale()==='ar'
-                                ? 'هندسة مدنية / صيانة طرق (وهمي)'
-                                : 'Civil Engineering / Road Maintenance (placeholder)'
+                                ? 'هندسة مدنية / صيانة طرق '
+                                : 'Civil Engineering / Road Maintenance '
                             }}
                         </span>
                     </div>
@@ -136,21 +138,21 @@
                     <div class="ui-row">
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'الهاتف' : 'Phone' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                            +964 000 111 2222
+                            +964 773 538 7902
                         </span>
                     </div>
 
                     <div class="ui-row">
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'البريد' : 'Email' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                            ali.saad@example.com
+                            ali.saad@gmail.com
                         </span>
                     </div>
 
                     <div class="ui-row">
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'واتساب' : 'WhatsApp' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                            +964 700 111 2222
+                            +964 773 538 7902
                         </span>
                     </div>
                 </div>
@@ -168,12 +170,7 @@
                     </a>
                 </div>
 
-                <p class="ui-help mt-4">
-                    {{ app()->getLocale()==='ar'
-                        ? 'هذه بيانات تجريبية فقط.'
-                        : 'These are placeholders only.'
-                    }}
-                </p>
+
             </div>
 
             {{-- ===== Developer Card ===== --}}
@@ -191,8 +188,8 @@
                         </div>
                         <div class="ui-muted mt-1">
                             {{ app()->getLocale()==='ar'
-                                ? 'مطور الواجهة والباك-إند (وهمي حالياً)'
-                                : 'Frontend & Backend developer (placeholder)'
+                                ? 'مطور الواجهة والباك-إند'
+                                : 'Frontend & Backend developer'
                             }}
                         </div>
                     </div>
@@ -202,28 +199,28 @@
                     <div class="ui-row">
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'الاسم' : 'Name' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                            {{ app()->getLocale()==='ar' ? 'سجاد (وهمي)' : 'Sajjad (placeholder)' }}
+                            {{ app()->getLocale()==='ar' ? 'المهندس سجاد الحيدري': 'eng Sajjad Alhidary' }}
                         </span>
                     </div>
 
                     <div class="ui-row">
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'الهاتف' : 'Phone' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                            +964 000 333 4444
+                            +964 772 225 0410
                         </span>
                     </div>
 
                     <div class="ui-row">
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'البريد' : 'Email' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                            dev@example.com
+                            dev@mail.com
                         </span>
                     </div>
 
                     <div class="ui-row">
                         <span class="ui-label">{{ app()->getLocale()==='ar' ? 'واتساب' : 'WhatsApp' }}</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                            +964 700 333 4444
+                            +964 773 225 0410
                         </span>
                     </div>
                 </div>
@@ -241,12 +238,6 @@
                     </a>
                 </div>
 
-                <p class="ui-help mt-4">
-                    {{ app()->getLocale()==='ar'
-                        ? 'ضيف روابطك الحقيقية لاحقاً.'
-                        : 'Add your real links later.'
-                    }}
-                </p>
             </div>
 
         </div>
@@ -257,8 +248,8 @@
             <div class="ui-h2">{{ app()->getLocale()==='ar' ? 'ملاحظة' : 'Note' }}</div>
             <p class="ui-p mt-2">
                 {{ app()->getLocale()==='ar'
-                    ? 'هذه الصفحة مصممة لتكون متناسقة مع نظام الـ UI في المشروع (كارد/سيرفس/ألوان). بعدين بس بدّل النصوص والروابط.'
-                    : 'This page matches your project UI system (cards/surfaces/colors). Later, just replace the texts and links.'
+                    ? 'كل الطرق العلمية المستخدمة في هذا الموقع مستندة على البحث العلمي للطالب .'
+                    : 'All scientific methods used on this site are based on student scientific research.'
                 }}
             </p>
         </div>

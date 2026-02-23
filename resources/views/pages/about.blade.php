@@ -564,12 +564,7 @@ A = TotalCost / Area   (IQD per m²)
         <span class="ui-badge">{{ $isAr ? 'فصل بحثي' : 'Research Chapter' }}</span>
       </div>
 
-      <p class="ui-p mt-3">
-        {{ $isAr
-          ? 'هذا القسم يطبّق اقتراحاتك السابقة: ترتيب “فصل كامل” يوثق التحويل. النص هنا داخل الصفحة بشكل ستاتك، ويمكنك لاحقاً نسخه كما هو إلى تقرير الـ PDF أو الرسالة.'
-          : 'This section implements your earlier suggestions: a full chapter-like structure documenting the conversion. The text is static in-page and can later be copied into the final thesis/PDF.'
-        }}
-      </p>
+
 
       <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
 
@@ -662,8 +657,8 @@ UI Charts + PDF Report
           </div>
           <p class="ui-p mt-2">
             {{ $isAr
-              ? 'ضمن التقرير، ضع Screenshots لأوامر CLI التي نفذتها لاختبار الخدمات (مثل anfis:test-gauge وغيرها) وبيّن أن النتائج ثابتة مع نفس المدخلات.'
-              : 'In the report, include screenshots of CLI commands used to test services (e.g., anfis:test-gauge) and show stable results for the same inputs.'
+              ? 'ضمن التقرير، سنضع Screenshots لأوامر CLI التي نفذتها لاختبار الخدمات (مثل anfis:test-gauge وغيرها) ولنوضح أن النتائج ثابتة مع نفس المدخلات.'
+              : 'In the report, we will include screenshots of CLI commands used to test services (e.g., anfis:test-gauge) to show stable results for the same inputs.'
             }}
           </p>
         </div>
@@ -718,12 +713,7 @@ UI Charts + PDF Report
         <span class="ui-badge">{{ $isAr ? 'روابط' : 'Links' }}</span>
       </div>
 
-      <p class="ui-p mt-2">
-        {{ $isAr
-          ? 'كل الروابط التالية استخدمت لتدعيم الشرح العلمي داخل هذه الصفحة.'
-          : 'The following links support the scientific statements in this page.'
-        }}
-      </p>
+
 
       <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
         <a class="ui-row hover:bg-black/5 dark:hover:bg-white/5 transition" href="https://www.dca.ufrn.br/~meneghet/FTP/anfis%2093.pdf" target="_blank" rel="noopener">
@@ -792,12 +782,7 @@ UI Charts + PDF Report
         </a>
       </div>
 
-      <p class="ui-help mt-4">
-        {{ $isAr
-          ? 'إذا تحب، أرتّب لك هذه المصادر بصيغة IEEE/APA داخل الصفحة أيضاً (ستاتك).'
-          : 'If you want, I can format these references in IEEE/APA style inside the page as well (static).'
-        }}
-      </p>
+
     </div>
 
   </div>
@@ -810,7 +795,7 @@ UI Charts + PDF Report
 
   <p class="ui-p mt-3">
     {{ $isAr
-      ? 'هذا مثال واحد يوضح مرور البيانات عبر الخدمات الخمس: HTS → ANFIS → Gauge → Sensitivity → Explanation. الأرقام هنا لشرح المنطق، أما قيمة ANFIS الدقيقة فتتحدد بحسب PS settings وملف الـ FIS الموجود لديك.'
+      ? 'هذا مثال واحد يوضح مرور البيانات عبر الخدمات الخمس: HTS → ANFIS → Gauge → Sensitivity → Explanation. الأرقام هنا لشرح المنطق، أما قيمة ANFIS الدقيقة فتتحدد بحسب PS settings وملف الـ FIS .'
       : 'This single example shows the full pipeline: HTS → ANFIS → Gauge → Sensitivity → Explanation. Numbers are used to explain the logic, while the exact ANFIS value depends on your PS settings and FIS file.'
     }}
   </p>
@@ -892,8 +877,8 @@ HTS = sum(days_above_40) from (2013 .. 2024)
 
     <p class="ui-help mt-3">
       {{ $isAr
-        ? 'هذا الرقم يدخل لاحقاً كواحد من مدخلات نموذج ANFIS (ضمن ordered13) حسب ترتيبك.'
-        : 'This value becomes one of the ANFIS inputs (within ordered13) based on your ordering.'
+        ? 'هذا الرقم يدخل لاحقاً كواحد من مدخلات نموذج ANFIS (ضمن ordered13) حسب الترتيب .'
+        : 'This value becomes one of the ANFIS inputs (within ordered13) based on the ordering.'
       }}
     </p>
   </div>

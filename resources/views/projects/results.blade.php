@@ -212,7 +212,7 @@
                     <h2 class="ui-h2">{{ $isAr ? 'مؤشر الكلفة (Gauge)' : 'Cost Gauge' }}</h2>
                     <p class="ui-p mt-2">
                         {{ $isAr
-                            ? 'يعرض المؤشر A (الكلفة لكل متر مربع) ضمن الرينجات المعرفة.'
+                            ? 'يعرض المؤشر A (الكلفة لكل متر مربع) ضمن المستويات المعرفة.'
                             : 'Shows A index (cost per m²) within the defined ranges.'
                         }}
                     </p>
@@ -414,7 +414,7 @@
           <div class="min-w-0">
             <div class="ui-label">{{ $isAr ? 'Cost Gauge' : 'Cost Gauge' }}</div>
             <div class="ui-muted mt-1">
-              {{ $isAr ? 'يعرض A ضمن الرينجات المعرفة.' : 'Shows A index within the defined ranges.' }}
+              {{ $isAr ? 'يعرض A ضمن المستويات المعرفة.' : 'Shows A index within the defined ranges.' }}
             </div>
           </div>
           <span class="ui-badge">JSON</span>

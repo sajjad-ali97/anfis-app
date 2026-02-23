@@ -158,7 +158,7 @@
 
 
                 {{-- Quick Analysis --}}
-                <a href="#"
+                <a href="{{ route('quick.analysis') }}"
                    class="ui-btn-primary px-4 py-2">
 
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
