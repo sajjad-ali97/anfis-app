@@ -34,9 +34,9 @@ class QuickAnalysisController extends Controller
         $validated['drainage_system']  = (int)($validated['drainage_system'] ?? 0);
 
         // 1) HTS
-        $hts = app(\App\Services\Anfis\HtsService::class)
-            ->calculate((int) $validated['pavement_age'], $validated['maintenance_date']);
-
+        // $hts = app(\App\Services\Anfis\HtsService::class)
+        //     ->calculate((int) $validated['pavement_age'], $validated['maintenance_date']);
+        $hts = 581;
         // 2) ترتيب الـ 13
         $ordered13 = [
             (float) $validated['pavement_area'],      // Var1

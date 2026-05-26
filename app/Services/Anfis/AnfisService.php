@@ -6,74 +6,58 @@ use InvalidArgumentException;
 
 class AnfisService
 {
-    private ?FisModel $model = null;
-
     /**
-     * يدخل: ordered13 raw (قبل log/normalization) بنفس ترتيب MATLAB V1..V13
-     * يطلع: cost بالدينار (بعد reverse normalization + inverse log)
+     * يدخل: ordered13 raw بنفس ترتيب:
+     * Var1  = Pavement Area
+     * Var2  = Pavement Age
+     * Var3  = Road Condition PCI
+     * Var4  = Asphalt Thickness
+     * Var5  = Pavement Type
+     * Var6  = Maintenance Type
+     * Var7  = Traffic Volume AADT
+     * Var8  = AADT Heavy-Loaded Vehicles
+     * Var9  = Road Classification
+     * Var10 = HTS
+     * Var11 = Soil Strength
+     * Var12 = Median Islands
+     * Var13 = Drainage System
+     *
+     * يطلع: Maintenance Cost
      */
     public function predictCost(array $ordered13): float
     {
-        if (count($ordered13) !== 13) {
-            throw new InvalidArgumentException('ANFIS requires exactly 13 inputs.');
-        }
+        $pavementArea     = (float) $ordered13[0];
+        $pavementAge      = (float) $ordered13[1];
+        $roadCondition    = (float) $ordered13[2];
+        $asphaltThickness = (float) $ordered13[3];
+        $pavementType     = (float) $ordered13[4];
+        $maintenanceType  = (float) $ordered13[5];
+        $trafficVolume    = (float) $ordered13[6];
+        $heavyLoadedAadt  = (float) $ordered13[7];
+        $roadClass        = (float) $ordered13[8];
+        $hts              = (float) $ordered13[9];
+        $soilStrength     = (float) $ordered13[10];
+        $medianIslands    = (float) $ordered13[11];
+        $drainageSystem   = (float) $ordered13[12];
+        $cost =
+            10676.0697 * $pavementArea
+            - 1300.3137 * ($pavementArea * $soilStrength)
+            + 1256.9190 * ($pavementArea * $pavementAge)
+            - 257.3673 * ($pavementArea * $asphaltThickness)
+            + 1263.7963 * ($pavementArea * $heavyLoadedAadt)
+            + 1249.5076 * ($pavementArea * $trafficVolume)
+            + 1218.2262 * ($pavementArea * $roadCondition)
+            + 1361.1376 * ($pavementArea * $maintenanceType)
+            + 5.4635 * ($pavementArea * $hts)
+            - 1210.9035 * ($pavementArea * $roadClass)
+            + 1039.4221 * ($pavementArea * $pavementType)
+            - (8.9799 * pow(10, -8)) * pow($pavementArea, 3)
+            + 0.0073 * (pow($pavementArea, 2) * $pavementType)
+            + 1146.6459 * ($pavementArea * $drainageSystem)
+            + 1192.4844 * ($pavementArea * $medianIslands)
+            - 0.0020 * (pow($pavementArea, 2) * $maintenanceType)
+            - 41.5244 * pow($asphaltThickness, 2);
 
-        $model = $this->getModel();
-
-        // 1) Log transform: log10(x + 1) (على كل المدخلات مثل MATLAB)
-        $xLog = [];
-        foreach ($ordered13 as $v) {
-            if (!is_numeric($v)) {
-                throw new InvalidArgumentException('All ANFIS inputs must be numeric.');
-            }
-            $xLog[] = $this->log10_safe(((float)$v) + 1.0);
-        }
-
-        // 2) Normalize inputs: mapminmax apply (0..1) باستخدام PS_in
-        $xNorm = MapMinMax::applyVector(
-            $xLog,
-            config('anfis.ps_in.gain'),
-            config('anfis.ps_in.xoffset'),
-            (float) config('anfis.ps_in.ymin'),
-            (float) config('anfis.ps_in.yrange')
-        );
-
-        // 3) evalfis (Sugeno, prod AND, linear consequents)
-        $yNorm = $model->evaluateSugeno($xNorm);
-
-        // 4) Reverse output normalization
-        $outLog = MapMinMax::reverseScalar(
-            $yNorm,
-            (float) config('anfis.ps_out.gain'),
-            (float) config('anfis.ps_out.xoffset'),
-            (float) config('anfis.ps_out.ymin'),
-            (float) config('anfis.ps_out.yrange')
-        );
-
-        // 5) Inverse log10: (10 ^ out_log) - 1
-        $cost = (pow(10.0, $outLog) - 1.0);
-
-        return $cost;
-    }
-
-    private function getModel(): FisModel
-    {
-        if ($this->model) return $this->model;
-
-        $fisPath = (string) config('anfis.model.fis_path');
-        $this->model = FisParser::fromFile($fisPath);
-
-        return $this->model;
-    }
-
-    private function log10_safe(float $x): float
-    {
-        // MATLAB: log10(train_x + 1) => x لازم >= 0 بعد +1
-        // هنا نحمي من أي قيمة سالبة غير متوقعة
-        if ($x <= 0.0) {
-            // بنفس منطق MATLAB تقريباً، بس نحمي التنفيذ
-            $x = 1e-12;
-        }
-        return log($x, 10);
+        return round($cost, 2);
     }
 }

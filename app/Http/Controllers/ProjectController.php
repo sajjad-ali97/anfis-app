@@ -52,9 +52,9 @@ class ProjectController extends Controller
 
 
         // 1) HtsService استخراج عدد الايام التي حرارتها اعلى من 40 من خلال عمر الطريق باستخدام
-        $hts = app(\App\Services\Anfis\HtsService::class)
-            ->calculate((int) $validated['pavement_age'], $project->maintenance_date);
-        // $hts = 363;
+        // $hts = app(\App\Services\Anfis\HtsService::class)
+        //     ->calculate((int) $validated['pavement_age'], $project->maintenance_date);
+        $hts = 581;
 
         // 2) ترتيب المدخلات من الفورم بحسب الترتيب الاساسي لمنطق الحساب ماتلاب
         $ordered13 = [

@@ -6,6 +6,7 @@ use App\Http\Controllers\QuickAnalysisController;
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Main Pages
